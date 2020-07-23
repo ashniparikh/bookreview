@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %} Login {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <h4 class="card-title mb-4 mt-1">Login</h4>
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label>Enter email : </label>
+                <input name="email" class="form-control" placeholder="Email" type="email" required>
+            </div> <!-- form-group// -->
+            <div class="form-group">
+                <label>Enter password : </label>
+                <input name="password" class="form-control" placeholder="Password" type="password" required>
+            </div> <!-- form-group// -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block"> Login  </button>
+            </div> <!-- form-group// -->
+            <p class="text-center"><a href="{{url_for('register')}}" class="">Don't have an account?</a></p>
+        </form>
+</div>
+
+{% endblock %}
