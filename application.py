@@ -144,7 +144,5 @@ def search():
             return render_template("error.html", message=e)
         if not result:
             return render_template("error.html", message="Your search did not match any documents")
-        return render_template("search.html", result=result)
+        return render_template("list.html", result=result)
 
-    
-    

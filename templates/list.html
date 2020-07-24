@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block title %} List of books {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="col-md-6 col-sm-12">
+            <table class="table .list">
+            <thead>
+                <tr>
+                <th scope="col">ISBN</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in result %}
+                <tr>
+                    <td>{{item.isbn}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.author}}</td>
+                    <td>{{item.year}}</td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+    </div>
+
+{% endblock %}
