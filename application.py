@@ -11,6 +11,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 app = Flask(__name__)
 
 
+
+
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
@@ -60,19 +62,29 @@ def register():
 
         else:
             #assign values to variables
-            user_name=request.form.get("user_name")
+            username=request.form.get("user_name")
+            print(username)
             email =request.form.get("email")
+            print(email)
             password=request.form.get("password1")
+            print(password)
+
+            register1=db.execute("SELECT * FROM users WHERE email LIKE :email",{"email":email}).fetchone()
+
+            if register1:
+                return render_template("error.html",message="EmailId is already in use")
 
             #try to commit to database and raise error if any
 
             try:
-                db.execute("INSERT INTO users(username,email,password) VALUES (:username, :email, :password)", {"username" :user_name, "email" : email, "password" : generate_password_hash(password) })
-
-            except Exception:
-                return render_template("error.html",message="User is already exist")
+                register=db.execute("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",
+                    {"username": username, "email": email, "password": generate_password_hash(password)})
+                print(register)
+            except Exception as e :
+                return render_template("error.html",message=e)
 
             db.commit()
+            print(db.commit())
             return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET","POST"])
@@ -112,7 +124,27 @@ def login():
     # User reached route via GET Method
     else:
         return render_template("login.html")
-        
+
+@app.route("/search", methods=["GET","POST"])
+@login_required
+def search():
+
+    if request.method == "GET":    
+        return render_template("search.html")
+    
+    else:
+        search_field=request.form.get("input-search")
+
+        if search_field is None:
+            return render_template("error.html",message="Search field can not be empty")
+        try:
+            result = db.execute("SELECT * FROM books WHERE LOWER(isbn) LIKE :search_field OR LOWER(title) LIKE :search_field OR LOWER(author) LIKE :search_field", {"search_field": "%" + search_field.lower() + "%"}).fetchall()
+            print(result)
+        except Exception as e:
+            return render_template("error.html", message=e)
+        if not result:
+            return render_template("error.html", message="Your search did not match any documents")
+        return render_template("search.html", result=result)
 
     
     
