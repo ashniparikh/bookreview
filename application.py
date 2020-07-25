@@ -1,4 +1,5 @@
 import os
+import requests
 
 
 from flask import Flask, session, render_template, redirect, request, url_for
@@ -146,3 +147,61 @@ def search():
             return render_template("error.html", message="Your search did not match any documents")
         return render_template("list.html", result=result)
 
+@app.route("/details/<int:bookid>", methods=["GET","POST"])
+@login_required
+
+def details(bookid):
+    if request.method == "GET":
+        #get book details
+        book_detail=db.execute("SELECT * FROM books WHERE bookid = :bookid",{"bookid":bookid}).fetchone()
+        print(book_detail.isbn)
+
+        #get API data from goodreads
+
+        try:
+            goodreads=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "xlfQUhgA3aDMrXndJd53gg", "isbns": book_detail.isbn})
+
+            print(goodreads)
+        except Exception as e:
+            return render_template("error.html", message=e)
+       
+        
+        #data=GoodReads.json()
+        #print(data)
+        #goodinfo =data["books"]
+        #print(goodinfo)
+       
+        
+
+        # get reviews to perticular book
+        review_list=db.execute("SELECT username, email, rating, review from reviews JOIN users ON users.userid=reviews.user_id WHERE book_id=:id",{"id":bookid}).fetchall()
+
+        if book_detail is None:
+            return render_template("error.html" , message="Invalid bookID")
+
+        return render_template("details.html",book_detail=book_detail,goodreads=goodreads.json()["books"][0],review_list=review_list,bookid=bookid )
+
+    else:
+        # check whether user commented on this selected book before 
+        current_user_review =db.execute("SELECT * FROM reviews WHERE book_id=:book_id AND user_id=:user_id",{"book_id":bookid, "user_id":session["user_id"]}).fetchone()
+
+        if current_user_review:
+            return render_template("error.html", message = "You reviewed this book before!")
+
+        # Get user review
+        user_review=request.form.get("reviews")
+        user_rating=request.form.get("rating")
+
+        
+        
+        #commit review to database
+
+        try:
+            comment=db.execute("INSERT INTO reviews (user_id, book_id, rating, review) VALUES (:user_id, :book_id, :rating,:review)",
+                            {"user_id":session["user_id"], "book_id": bookid, "rating":user_rating, "review":user_review})
+        except Exception as e:
+            return render_template("error.html", message=e)
+
+        db.commit()
+        #success - redirect to details page
+        return redirect(url_for("details",bookid=bookid))

@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block title %}Details{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="container">
+        <h1 class="display-4">Book Details</h1>
+        <p class="lead">ISBN: {{book_detail.isbn}} </p>
+        <p class="lead">Title: {{book_detail.title}}</p>
+        <p class="lead">Author: {{book_detail.author}}</p>
+        <p class="lead">Year: {{book_detail.year}}</p>
+    </div>
+    <div class="list-group">
+        <button type="button" class="btn btn-secondary mb-3">
+            Average Rating: <span class="badge badge-light">{{ goodreads["average_rating"]  }}</span>
+        </button>
+        <button type="button" class="btn btn-secondary mb-3">
+            Number of Ratings: <span class="badge badge-light">{{ goodreads["work_reviews_count"]}}</span>
+        </button>
+    </div>
+    <h3>Reviews</h3>
+    {% for review in review_list %}
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title"><span class="badge badge-info">{{review.username}} </span>
+              {% if review.rating == 5 %}
+                <span class="badge badge-success float-right">{{review.username}} rated it {{review.rating}}</span>
+              {% elif review.rating == 4 or review.rating == 3 %}
+                <span class="badge badge-warning float-right">{{review.username}} rated it {{review.rating}}</span>
+              {% elif review.rating == 2 or review.rating == 1 %}
+                <span class="badge badge-danger float-right">{{review.username}} rated it {{review.rating}}</span>
+              {% endif %}
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted"><span class="badge">{{review.email}}</span></h6>
+            <p class="card-text mt-3 alert alert-info">{{review.review}}</p>
+          </div>
+        </div>
+    {% endfor %}
+
+    {% if current_user_review %}
+        <div class="card">
+        <blockquote class="blockquote mb-0 card-body">
+            <p>{{ current_user_review.review}}</p>
+            <footer class="blockquote-footer">
+                <small class="text-muted">
+                    <cite title="User">You</cite> rated it {{ current_user_review.rating }}
+                </small>
+            </footer>
+        </blockquote>
+        </div>
+    {% else %}
+        <form action="{{url_for('details',bookid=bookid)}}" method="post">
+            <div class="form-group">
+            <label for="Rating">Rating</label>
+               <select class="form-control" id="Rating" name="rating">
+               <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option value="5">5</option>
+                </select> 
+            </div>
+            <div class="form-group">
+               <label for="Comments">Reviews: </label>
+               <textarea class="form-control" id="Comments" rows="8" name="reviews" ></textarea>
+            </div> 
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Post</button>
+             </div>
+        </form>
+        {% endif %}
+  </div>
+{% endblock %}
