@@ -15,5 +15,30 @@
                 </div> 
             </form>
         </div>
+         <div class="col-md-6 col-sm-12">
+         {% if result %}
+            <table class="table .list">
+            <thead>
+                <tr>
+                <th scope="col">ISBN</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in result %}
+                <tr>
+                    <td>{{item.isbn}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.author}}</td>
+                    <td>{{item.year}}</td>
+                    <td><a href= "details/{{item.bookid}}">Details</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table> 
+        {% endif %}
+        </div>
     </div>
 {% endblock %}

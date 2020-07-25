@@ -2,7 +2,7 @@ import os
 import requests
 
 
-from flask import Flask, session, render_template, redirect, request, url_for
+from flask import Flask, session, render_template, redirect, request, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -126,6 +126,15 @@ def login():
     else:
         return render_template("login.html")
 
+@app.route("/logout")
+@login_required
+def logout():
+    # Forget any user_id
+    session.clear()
+
+    #redirect user to index page
+    return redirect(url_for("index"))
+
 @app.route("/search", methods=["GET","POST"])
 @login_required
 def search():
@@ -145,7 +154,7 @@ def search():
             return render_template("error.html", message=e)
         if not result:
             return render_template("error.html", message="Your search did not match any documents")
-        return render_template("list.html", result=result)
+        return render_template("search.html", result=result)
 
 @app.route("/details/<int:bookid>", methods=["GET","POST"])
 @login_required
@@ -205,3 +214,30 @@ def details(bookid):
         db.commit()
         #success - redirect to details page
         return redirect(url_for("details",bookid=bookid))
+@app.route("/api/<string:isbn>")
+@login_required
+def api(isbn):
+    #get details for perticular book
+    try:
+        book = db.execute("SELECT * FROM books WHERE isbn=:isbn",{"isbn":isbn}).fetchone()
+    except Exception as e:
+        return render_template("error.html",message=e)
+    if book is None:
+        return jsonify({"error : Book not found"}),404
+
+    #get data from goodreads API
+    goodreads=requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "xlfQUhgA3aDMrXndJd53gg", "isbns": isbn})
+
+    data=goodreads.json()
+    bookinfo=data["books"][0]
+
+    # return book details in JSON
+    return jsonify({
+        "isbn" : book.isbn,
+        "title" : book.title,
+        "author" : book.author,
+        "year" : book.year,
+        "review_count" : bookinfo["work_reviews_count"],
+        "average_score" : bookinfo["average_rating"]
+
+    })
