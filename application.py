@@ -64,12 +64,9 @@ def register():
         else:
             #assign values to variables
             username=request.form.get("user_name")
-            print(username)
             email =request.form.get("email")
-            print(email)
             password=request.form.get("password1")
-            print(password)
-
+            
             register1=db.execute("SELECT * FROM users WHERE email LIKE :email",{"email":email}).fetchone()
 
             if register1:
@@ -80,12 +77,10 @@ def register():
             try:
                 register=db.execute("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",
                     {"username": username, "email": email, "password": generate_password_hash(password)})
-                print(register)
             except Exception as e :
                 return render_template("error.html",message=e)
 
             db.commit()
-            print(db.commit())
             return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET","POST"])
@@ -174,14 +169,6 @@ def details(bookid):
         except Exception as e:
             return render_template("error.html", message=e)
        
-        
-        #data=GoodReads.json()
-        #print(data)
-        #goodinfo =data["books"]
-        #print(goodinfo)
-       
-        
-
         # get reviews to perticular book
         review_list=db.execute("SELECT username, email, rating, review from reviews JOIN users ON users.userid=reviews.user_id WHERE book_id=:id",{"id":bookid}).fetchall()
 
@@ -200,9 +187,7 @@ def details(bookid):
         # Get user review
         user_review=request.form.get("reviews")
         user_rating=request.form.get("rating")
-
-        
-        
+ 
         #commit review to database
 
         try:
@@ -214,6 +199,7 @@ def details(bookid):
         db.commit()
         #success - redirect to details page
         return redirect(url_for("details",bookid=bookid))
+
 @app.route("/api/<string:isbn>")
 @login_required
 def api(isbn):

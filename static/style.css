@@ -1,0 +1,43 @@
+@media (min-width: 768px) {
+    body {
+        background-image: url("book-min.jpg");
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-color: transparent;
+        background-size: auto;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+}
+
+.login-form,
+.register-form {
+    margin-top: 20%;
+}
+
+.search-form {
+    margin-top: 10px;
+}
+
+.container-search {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    float: center-left;
+    height: 100px;
+}
+
+.search {
+    margin-top: 50px;
+}
+
+#details {
+    background-color: white;
+}
+
+.card-text {
+    font-style: italic;
+}

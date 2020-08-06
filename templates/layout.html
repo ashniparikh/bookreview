@@ -6,12 +6,11 @@
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="..\static\site.css">
+    <link rel="stylesheet" href="..\static\style.css">
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-  
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
       {% if session.logged_in %}
         <a class="navbar-brand" href="{{url_for('search')}}">Book Review</a>
@@ -29,15 +28,16 @@
             {% if session.logged_in %}
 
             <li class="nav-item active">
-              <h6 class="nav-link">Welcome, {{session.username}}</h6>
+              <h6 class="nav-link">Welcome {{session.username}}</h6>
             </li>
             <li class="nav-item">
-              <a class="btn btn-outline-light btn-success mr-2" href="{{url_for('search')}}" role="button">Search</a>
+              <a class="btn btn-dark btn-outline-light btn-success mr-2" href="{{url_for('search')}}" role="button">Search</a>
             </li>
             <li class="nav-item">
               <li><a href="{{url_for('logout')}}"><button class="btn btn-outline-light float-right" type="submit">Logout</button></a></li>
             </li>
             {% else %}
+            
             <li class="nav-item">
               <a href="{{url_for('register')}}"><button class="btn btn-outline-light" type="submit">Sign Up</button></a>
             </li>
@@ -47,6 +47,7 @@
       </div>
     </nav>
         {% block body %}
+          
         {% endblock %}
 
         <!-- JavaScript components for Bootstrap -->

@@ -5,30 +5,38 @@
 {% block body%}
 
 <div class="container">
-    <h4>Sign Up</h4>
-    <form action="/register" method="post">
-        <div class="form-group">
-            <label>User Name : </label>
-            <input name="user_name" class="form-control" placeholder="Enter username" type="text" required>
+    <div class="row">
+        <div class="col-6 ">
+          <div class="register-form">
+            <h4>Sign Up</h4>
+            <form action="/register" method="post">
+                <div class="form-group">
+                    <label>User Name : </label>
+                    <input name="user_name" class="form-control" placeholder="Enter username" type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>Email : </label>
+                    <input name="email" class="form-control" placeholder="email@example.com" type="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Password : </label>
+                    <input name="password1" class="form-control" placeholder="Enter password" type="password" required>
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password : </label>
+                    <input name="password2" class="form-control" placeholder="Renter password" type="password" required>
+                </div>
+                <div class="form-group">
+                </div> 
+                <div class="form-group">
+                    <button type="submit" class="btn btn-dark btn-block"> Register  </button>
+                </div>
+                <p class="text-center"><a href="{{url_for('login')}}" class="" style="color:black;">Already have an account?</a></p>
+                
+            </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Email : </label>
-            <input name="email" class="form-control" placeholder="email@example.com" type="email" required>
-        </div>
-        <div class="form-group">
-            <label>Password : </label>
-            <input name="password1" class="form-control" placeholder="Enter password" type="password" required>
-        </div>
-        <div class="form-group">
-            <label>Confirm Password : </label>
-            <input name="password2" class="form-control" placeholder="Renter password" type="password" required>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block"> Register  </button>
-        </div>
-        <p class="text-center"><a href="{{url_for('login')}}" class="">Already have an account?</a></p>
-        
-    </form>
+    </div>
 </div>
 
 {% endblock %}
