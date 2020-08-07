@@ -1,7 +1,7 @@
-#Book Reviews
+# Book Reviews
 My solution for Project 1 for CS50's Web Programming with Python and JavaScript
 
-#Overview
+# Overview
 The goal of the project is to build a book review website. There will be a user system(to login and register). On the page, the user can search for books, leave a review, and see reviews made by other users. Also, there is an integration with the API provided by Goodreads to show extra information about the books.In addition, users are able to query for book details and book reviews programmatically via website's API.
 
 # Getting Started
