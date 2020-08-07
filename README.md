@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# Book Reviews
-=======
 # Book Review
->>>>>>> dd7fbfe1c1db88e2089e1113fd097c0db7f75ad6
 My solution for Project 1 for CS50's Web Programming with Python and JavaScript
 
 # Overview
