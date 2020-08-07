@@ -6,9 +6,9 @@
   <div class="container">
           <div class="row" id="details" style="background-color: transparent;">
             <div class="col-md-6 col-sm-12 my-5">
-              <div class="jumbotron">
+              <div class="jumbotron" style="width: 500px;background-color: white; ">
               <div class="container">
-                  <h1 class="display-4">Book Details</h1>
+                  <h3 class="display-4">Book Details</h3>
                   <p class="lead">ISBN: {{book_detail.isbn}} </p>
                   <p class="lead">Title: {{book_detail.title}}</p>
                   <p class="lead">Author: {{book_detail.author}}</p>
@@ -29,7 +29,8 @@
             </div>
             <div class="col-md-6 col-sm-12 my-5">
               <div class="list-group">
-                  <h3><b>Reviews</b></h3>
+                  <h3><u>Reviews</u></h3>
+            {% if  review_list %}    
               {% for review in review_list %}
                   <div class="card mb-3">
                     <div class="card-body">
@@ -47,6 +48,11 @@
                     </div>
                   </div>
               {% endfor %}
+            {% else %}
+                  <div class="alert alert-dark" role="alert">
+                    No one reviewed yet!
+                  </div>
+            {% endif %}    
               </div>
             </div>
           </div>
