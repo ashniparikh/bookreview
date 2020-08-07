@@ -1,4 +1,4 @@
-# Book Reviews
+# Book Review
 My solution for Project 1 for CS50's Web Programming with Python and JavaScript
 
 # Overview
